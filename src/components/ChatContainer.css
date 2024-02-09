@@ -1,0 +1,68 @@
+.ChatContainer{
+    padding-top: 1rem;
+    display: grid;
+    grid-template-rows: 10% 78% 12%;
+    gap: 0.1rem;
+    overflow: hidden;
+    background-color: #1c1a1a;
+    @media screen and (min-width:720px) and (max-width:1080px){   
+        /* for making website responsive */
+        grid-template-rows: 15% 70% 15%;
+    }
+}
+.chat-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.2rem;
+}
+.user-details{
+    display: flex;
+    align-items: center;
+    gap: 1rem;  
+    margin-left: 1rem; 
+}
+.avatar2 img{
+    height: 3rem;
+}
+.username h3{
+    color: white;
+}
+
+.chat-messages{
+   padding: 1rem 2rem;
+   display: flex;
+   flex-direction: column;
+   gap: 1rem;
+   overflow: auto;
+}
+.message{
+    display: flex;
+    align-items: center;
+}
+.content1{
+    max-width: 40%;
+    overflow-wrap: break-word;
+    padding: 1rem;
+    font-size: 1.1rem;
+    border-radius: 1rem;
+    color: #d1d1d1;
+}
+.senders{
+    justify-content: flex-end;
+}
+.senders div{
+    /* background-color: #4f04ff21; */
+    background-color: rgb(24, 145, 24);
+    font-weight: 1000;
+    
+}
+
+
+.received{
+    justify-content: flex-start;
+    
+}
+.received div{
+    background-color: black;
+}
