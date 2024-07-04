@@ -28,7 +28,8 @@ const Chat = () => {
 
   useEffect(()=>{
     if(currentUser){
-      socket.current = io("http://localhost:7000");
+      // socket.current = io("http://localhost:7000");
+      socket.current = io("https://chat-app-backend-3lal.onrender.com");
       socket.current.emit("add-user" ,currentUser._id);
     }
   },[currentUser])
@@ -44,7 +45,8 @@ const Chat = () => {
 
       if (currentUser.isAvatarImageSet === true) {
         let userId = currentUser._id;
-        let result = await fetch(`http://localhost:7000/allusers/${userId}`);
+        // let result = await fetch(`http://localhost:7000/allusers/${userId}`);
+        let result = await fetch(`https://chat-app-backend-3lal.onrender.com/allusers/${userId}`);
         result = await result.json();
 
         setContacts(result);
@@ -67,9 +69,6 @@ const Chat = () => {
         {currentChat === undefined ? <Welcome currentUser={currentUser} isLoaded={isLoaded} /> :
           <ChatContainer currentChat={currentChat} currentUser={currentUser} isLoaded={isLoaded} socket={socket} />
         }
-
-
-
       </div>
     </div>
   )

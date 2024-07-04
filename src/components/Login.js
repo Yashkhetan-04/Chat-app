@@ -1,9 +1,11 @@
 import React from 'react';
 import { useState , useEffect} from 'react';
-import Logo from '../assets/logo.svg'
+import Logo from '../assets/meetme.png'
 import { Link } from 'react-router-dom';
 import './SignUp.css'
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
     const [email, setEmail] = useState("");
@@ -12,7 +14,8 @@ const Login = () => {
 
     const handleSubmit = async () => {
         if (handleValidation()) {
-            let user = await fetch("http://127.0.0.1:7000/login", {
+          
+            let user = await fetch("https://chat-app-backend-3lal.onrender.com/login", {
                 method: 'post',
                 body: JSON.stringify({email, password}),
                 headers: {
@@ -20,36 +23,40 @@ const Login = () => {
                 },
             });
             user = await user.json();
-            // const flag = user.status;
-            // console.log(flag);
-            // if(flag===false){
-            //     alert(user.msg);
-            // }
-            // else if(flag===true){
+            const flag = user.status;
+            if(flag===false){
+                toast.error(user.msg , toastOptions);
+            }
+            else if(flag === true){
+                localStorage.setItem("user" , JSON.stringify(user.user));
+                navigate(`/`);
+            }
+            // if(user){
             //     localStorage.setItem("user" , JSON.stringify(user));
             //     navigate('/');
             // }
-            if(user){
-                localStorage.setItem("user" , JSON.stringify(user));
-                navigate('/');
-            }
-            else{
-                alert(user.msg);
-            }
+            // else{
+            //     alert(user.msg);
+            // }
         }
-        else{
-            alert("123");
-        }
+    }
+
+    const toastOptions = {
+        position:"bottom-right",
+        autoClose:8000,
+        pauseOnHover:true,
+        draggable:'touch',
+        theme:"dark",
     }
 
     const handleValidation = () => {
 
         if (password === "") {
-            alert("Password is required");
+            toast.error("Email and Password is required." , toastOptions);
             return false;
         }
         else if (email==="") {
-            alert('Password should be greater than 8 character');
+            toast.error("Email and Password is required." , toastOptions);
             return false;
         }
         return true;
@@ -71,11 +78,12 @@ const Login = () => {
     },[])
 
     return (
+        <>
         <div className='SignUp'>
             <div className='form'>
                 <div className='brand'>
                     <img src={Logo} alt="Logo" />
-                    <h1>Snappy</h1>
+                    <h1>Convoia</h1>
                 </div>
                 <input type="email" value={email} placeholder='Email' name='email' onChange={handleChange_email} />
     
@@ -86,7 +94,9 @@ const Login = () => {
 
             </div>
         </div>
+        <ToastContainer/>
+        </>
     )
 }
 
-export default Login
+export default Login;

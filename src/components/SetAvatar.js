@@ -4,6 +4,8 @@ import { Buffer } from "buffer";
 import { useNavigate } from "react-router-dom";
 import './SetAvatar.css'
 import loader from '../assets/loader.gif';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const SetAvatar = () => {
     const api = `https://api.multiavatar.com/4645646`;
     const navigate = useNavigate();
@@ -17,19 +19,25 @@ const SetAvatar = () => {
         }
     },[])
 
+    
+    const toastOptions = {
+        position:"bottom-right",
+        autoClose:8000,
+        pauseOnHover:true,
+        draggable:'touch',
+        theme:"dark",
+    }
+
     const setProfilePicture = async () => {
         if (selectedAvatar === undefined) {
-            alert("Please select an Avatar.")
+            toast.error("Please select an Avater" , toastOptions);
         }
         else {
             const image = avatars[selectedAvatar];
-            // console.log(selectedAvatar);
-            let result = JSON.parse(localStorage.getItem('user')).user;
-    
+            let result = JSON.parse(localStorage.getItem('user'));
             let userId = result._id;
-            // console.log(userId);
             if ( userId !== undefined) {
-                let data = await fetch(`http://localhost:7000/setAvatar/${userId}`, {
+                let data = await fetch(`https://chat-app-backend-3lal.onrender.com/setAvatar/${userId}`, {
                     method: 'post',
                     body: JSON.stringify({ image }),
                     headers: {
@@ -40,17 +48,15 @@ const SetAvatar = () => {
                 if (data.isSet) {
                     result.isAvatarImageSet = true; //saving changes in localhost
                     result.AvatarImage = data.image;
-                    // result = JSON.parse(result);
                     localStorage.setItem('user', JSON.stringify(result));
                     navigate('/');
                 }
                 else {
-                    alert("Error setting Avatar! try again later");
+                    toast.error("Error setting Avatar!Please try again later" , toastOptions);
                 }
-                // console.log(data);
             }
             else {
-                alert("ID is not accessible");
+                toast.error("ID is not accessible" , toastOptions);
             }
         }
     };
@@ -108,7 +114,7 @@ const SetAvatar = () => {
                         </button>
                     </div>
             }
-
+            <ToastContainer/>
         </>
     );
 }

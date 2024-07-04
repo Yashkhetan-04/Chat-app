@@ -2,11 +2,19 @@
     display: grid;
     grid-template-columns:5% 95%;
     align-items: center;
-    background-color: #080420;
+    /* background-color: #080420; */
+    background-color: rgb(19, 17, 17);
     padding: 0 2rem;
     padding-bottom: 0.3rem;
     /* min-height: 4.3rem; */
 }
+
+@media only screen and (min-width: 720px) and (max-width: 1080px){
+    .ChatInput{
+        padding : 0 1rem;
+        gap: 1rem;
+    }
+}  
 .button-container{
     display: flex;
     align-items: center;
@@ -22,13 +30,12 @@
     cursor: pointer;
 }
 .emoji-picker-react{
-    position: absolute;
-    font-size: 2px;
-    top: -400px;
-    height: 300px;
-    width: 350px;
+    position:fixed;
+    font-size: 1px;
+    top: 100px;
+    height: 200px;
+    width: 200px;
 }
-
 .input-container{
     width: 100%;
     border-radius: 2rem;
@@ -60,6 +67,15 @@
     align-items: center;
     background-color: #9a86f3;
     border: none;
+}
+
+@media only screen and (min-width: 720px) and (max-width: 1080px){
+    .input-container button{
+        padding:0.3rem 1rem;
+    }
+    .input-container button svg{
+        font-size: 1rem;
+    }
 }
 
 .input-container button svg{

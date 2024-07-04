@@ -4,7 +4,6 @@ import { useEffect } from 'react'
 import './ChatContainer.css'
 import Logout from './Logout.js'
 import ChatInput from './ChatInput.js'
-import Messages from './Messages.js'
 import {v4 as uuidv4} from 'uuid'
 const ChatContainer = ({ currentChat, currentUser, isLoaded , socket}) => {
     const [messages, setMessages] = useState([]);
@@ -20,7 +19,7 @@ const ChatContainer = ({ currentChat, currentUser, isLoaded , socket}) => {
         let from = currentUser._id;
         let to = currentChat._id;
         
-        let response = await fetch("http://127.0.0.1:7000/getmsg", {
+        let response = await fetch("https://chat-app-backend-3lal.onrender.com/getmsg", {
             method: 'post',
             body: JSON.stringify({from, to}),
             headers: {
@@ -28,7 +27,6 @@ const ChatContainer = ({ currentChat, currentUser, isLoaded , socket}) => {
             },
         })
         response = await response.json();
-        console.log(response);
         setMessages(response);
         setisdataloaded(true);
     }
@@ -36,11 +34,10 @@ const ChatContainer = ({ currentChat, currentUser, isLoaded , socket}) => {
 
     const handleSendMsg = async (msg) => {
         if (isLoaded === true) {
-            console.log(currentChat._id, currentUser._id, msg);
             let from = currentUser._id;
             let to = currentChat._id;
             let message = msg;
-            await fetch("http://127.0.0.1:7000/addmsg", {
+            await fetch("https://chat-app-backend-3lal.onrender.com/addmsg", {
                 method: 'post',
                 body: JSON.stringify({ from, to, message }),
                 headers: {
@@ -88,12 +85,12 @@ const ChatContainer = ({ currentChat, currentUser, isLoaded , socket}) => {
                 </div>
                 <Logout />
             </div>
-            {/* <Messages /> */}
             <div className="chat-messages">
                 {
                     isLoaded && isdataloaded && messages.map((message,index) => {
                         return (
                             <div ref={scrollRef} key={uuidv4()}>
+                                {/* uuid will provide unique id to all messages */}
                                 <div className={`message ${message.fromSelf ? "senders" : "received"}`}>
                                     <div className="content1 content2 content3">
                                         <p>{message.message}</p>

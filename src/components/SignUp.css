@@ -6,7 +6,9 @@
     justify-content: center;
     gap: 1rem;
     align-items: center;
-    background-color: #131324;
+    /* background-color: #131324; */
+    /* background-color: black; */
+    background-color: #333333;
 }
 
 .brand{
@@ -44,7 +46,8 @@
 }
 
 .form button{
-    background-color: #997af0;
+    /* background-color: #997af0; */
+    background-color: #554387;
     color: white;
     padding: 1rem 2rem;
     border: none;

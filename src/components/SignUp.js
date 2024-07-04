@@ -1,10 +1,10 @@
 import React from 'react';
 import { useState  , useEffect} from 'react';
 import { Link } from 'react-router-dom';
-import Logo from '../assets/logo.svg'
+import Logo from '../assets/meetme.png'
 import './SignUp.css'
-// import { ToastContainer, toast } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
@@ -16,7 +16,7 @@ const Register = () => {
 
     const handleSubmit = async () => {
         if (handleValidation()) {
-            let result = await fetch("http://127.0.0.1:7000/register", {
+            let result = await fetch("https://chat-app-backend-3lal.onrender.com/register", {
                 method: 'post',
                 body: JSON.stringify({ username, email, password}),
                 headers: {
@@ -26,40 +26,39 @@ const Register = () => {
             result = await result.json();
            const flag = result.status;
             if(flag===false){
-                alert(result.msg);
+                toast.error(result.msg , toastOptions);
             }
             else if(flag===true){
-                localStorage.setItem("user" , JSON.stringify(result));
+                localStorage.setItem("user" , JSON.stringify(result.user));
                 navigate(`/setAvatar`);
             }
         }
 
     }
 
+    const toastOptions = {
+        position:"bottom-right",
+        autoClose:8000,
+        pauseOnHover:true,
+        draggable:'touch',
+        theme:"dark",
+    }
     const handleValidation = () => {
 
         if (password !== confirmPassword) {
-            alert("Password and Confirm Password should be same.");
-            // toast("Hello, this is a toast!");
-            // toast.error("password and confirm password should be same." , {
-            //     position:"bottom-right",
-            //     autoClose:8000,
-            //     pauseOnHover:true,
-            //     draggable:'touch',
-            //     theme:"dark",
-            // });
+            toast.error("password and confirm password should be same." , toastOptions);
             return false;
         }
         else if (username.length < 3) {
-            alert('Username should be greater than 3 character');
+            toast.error("Username should be greater than 3 character." , toastOptions);
             return false;
         }
         else if (password.length < 8) {
-            alert('Password should be greater than 8 character');
+            toast.error("Password should be greater than 8 character." , toastOptions);
             return false;
         }
         else if (email === "") {
-            alert('Email is required');
+            toast.error("Email is required." , toastOptions);
             return false;
         }
         return true;
@@ -87,11 +86,12 @@ const Register = () => {
     
 
     return (
+        <>
         <div className='SignUp'>
             <div className='form'>
                 <div className='brand'>
                     <img src={Logo} alt="Logo" />
-                    <h1>Snappy</h1>
+                    <h1>Convoia</h1>
                 </div>
                 <input type="text" value={username} placeholder='UserName' name='username' onChange={handleChange_name} />
                 <input type="email" value={email} placeholder='Email' name='email' onChange={handleChange_email} />
@@ -101,6 +101,8 @@ const Register = () => {
                 <span>Already have an Account ? <Link to="/login">Login</Link></span>
             </div>
         </div>
+        <ToastContainer/>
+        </>
     )
 }
 

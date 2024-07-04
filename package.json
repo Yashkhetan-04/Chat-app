@@ -2,6 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
+  "homepage": ".",
   "dependencies": {
     "@emoji-mart/data": "^1.1.2",
     "@emoji-mart/react": "^1.1.1",
@@ -14,12 +15,13 @@
     "components": "^0.1.0",
     "emoji-mart": "^5.5.2",
     "emoji-picker-react": "^4.7.0",
+    "netlify-cli": "^17.32.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.0.1",
     "react-router-dom": "^6.21.2",
     "react-scripts": "5.0.1",
-    "react-toastify": "^10.0.3",
+    "react-toastify": "^10.0.5",
     "socket.io-client": "^4.7.4",
     "styled": "^1.0.0",
     "uuid": "^9.0.1",
@@ -48,5 +50,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
   }
 }

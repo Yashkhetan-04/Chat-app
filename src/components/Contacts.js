@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import Logo from '../assets/logo.svg';
+import Logo from '../assets/meetme.png'
 import './Contacts.css'
 
 const Contacts = ({ contacts, currentUser , currentChat}) => {
@@ -26,7 +26,7 @@ const Contacts = ({ contacts, currentUser , currentChat}) => {
                 <div className='Contacts'>
                     <div className="Contacts-brand">
                         <img src={Logo} alt="logo" />
-                        <h3>Snappy</h3>
+                        <h3>Convoia</h3>
                     </div>
                     <div className="contacts">
                         {contacts.map((contact, index) => {
