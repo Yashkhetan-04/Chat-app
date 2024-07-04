@@ -1,10 +1,13 @@
+const dotenv = require("dotenv");
+dotenv.config();
 const express = require('express');
+const app = express();
 const cors = require('cors');
 require('./db/config');
 const User = require('./db/User');
 const Message = require('./db/Messages');
-const app = express();
-const socket = require('socket.io')
+const socket = require('socket.io');
+const bcrypt = require('bcrypt');
 app.use(express.json());
 app.use(cors({
     origin: "http://localhost:3000"
@@ -20,32 +23,30 @@ app.post('/register', async (req, resp, next) => {
     if (emailCheck) {
         return resp.send({ msg: "Email already used", status: false });
     }
-    let user = new User(req.body);
-    let result = await user.save(); // details are saved in database
-    result = result.toObject();
-    delete user.password
-    // resp.send(result);
+    const hashedPassword = await bcrypt.hash(password , 10);
+    const user = await User.create({
+        email,
+        username,
+        password:hashedPassword,
+    });
+    delete user.password;
     return resp.send({ status: true, user });
-
-})
+});
 
 app.post('/login', async (req, resp, next) => {
-    let user = await User.findOne(req.body);
-    // if (!user) {
-    //     resp.send({ msg: "Incorrect Credentials", status: false });
-    // }
-    // delete user.password;
-    // resp.send({ user, status: true });
 
-    console.log(user);
-    if (user) {
-        delete user.password;
-        resp.send(user);
+    const {email, password } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) {
+        return resp.send({ msg: "Incorrect email and password", status: false });
     }
-    else {
-        resp.send({ msg: "Incorrect Credentials" });
+    
+    const isPasswordValid = await bcrypt.compare(password , user.password);
+    if(!isPasswordValid){
+        return resp.send({ msg: "Incorrect email and password", status: false })
     }
-
+    delete user.password;
+    return resp.send({ status: true, user });
 })
 
 app.post('/setAvatar/:id', async (req, resp, next) => {
@@ -59,8 +60,6 @@ app.post('/setAvatar/:id', async (req, resp, next) => {
             AvatarImage: avatarImage
         }
         );
-        // console.log(userData);
-
         resp.send({ isSet: userData.isAvatarImageSet, image: userData.AvatarImage });
     }
     catch (error) {
@@ -113,6 +112,7 @@ app.post("/getmsg", async (req, resp, next) => {
         next(ex);
     }
 })
+
 const server = app.listen(7000);
 
 const io = socket(server , {
