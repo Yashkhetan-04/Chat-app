@@ -8,9 +8,10 @@ const User = require('./db/User');
 const Message = require('./db/Messages');
 const socket = require('socket.io');
 const bcrypt = require('bcrypt');
+const PORT = process.env.PORT
 app.use(express.json());
 app.use(cors({
-    origin: "http://localhost:3000"
+    origin: process.env.ORIGIN
 }));
 
 app.post('/register', async (req, resp, next) => {
@@ -113,7 +114,7 @@ app.post("/getmsg", async (req, resp, next) => {
     }
 })
 
-const server = app.listen(7000);
+const server = app.listen(PORT);
 
 const io = socket(server , {
     cors:{
